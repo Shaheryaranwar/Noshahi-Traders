@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.db.models import Q
 from .models import Product, Category
 
-def product_list(request):
+def product_list(request , categore_slug):
     products = Product.objects.filter(is_active=True)
     
     # Filtering
@@ -49,3 +49,13 @@ def product_list(request):
         'categories': Category.objects.filter(is_active=True),
     }
     return render(request, 'products/product_list.html', context)
+
+def product_detail(request, id,slug):
+    product = get_object_or_404(Product, slug=slug, is_active=True, id=id)
+    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)[:4]
+    
+    context = {
+        'product': product,
+        'related_products': related_products,
+    }
+    return render(request, 'products/product_detail.html',{ 'product': product, 'related_products': related_products })
