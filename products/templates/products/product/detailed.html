@@ -1,9 +1,4 @@
-{% extands "base.html" %}
-
-{% block title %}
-    {{ product.name }} - Product Details
-{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %} {{ product.name }} - Product Details
+{% endblock %} {% block content %}
 <h1>{{product.name}}</h1>
 {% endblock %}
