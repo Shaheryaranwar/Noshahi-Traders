@@ -9,6 +9,15 @@ class Category(models.Model):
     image = models.ImageField(upload_to='categories/', blank=True)
     is_active = models.BooleanField(default=True)
     
+    # Add gender field for clothing categories
+    GENDER_CHOICES = [
+        ('men', 'Men'),
+        ('women', 'Women'),
+        ('kids', 'Kids'),
+        ('unisex', 'Unisex'),
+    ]
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='unisex')
+    
     class Meta:
         verbose_name_plural = "Categories"
     
@@ -31,80 +40,134 @@ class Supplier(models.Model):
         return self.name
 
 class Product(models.Model):
-    WOOD_TYPES = [
-        # 🟢 COMMON & AFFORDABLE (Most Popular in Pakistan)
-        ('sheesham', 'Sheesham (Indian Rosewood)'),
-        ('mango', 'Mango Wood'),
-        ('neem', 'Neem Wood'),
-        ('acacia', 'Acacia'),
-        ('rubberwood', 'Rubberwood'),
-        ('babul', 'Babul (Kikar)'),
-        ('poplar', 'Poplar'),
+    # Clothing Categories
+    CLOTHING_TYPES = [
+        # 🟢 Men's Clothing
+        ('mens_tshirt', 'Men\'s T-Shirt'),
+        ('mens_shirt', 'Men\'s Shirt'),
+        ('mens_trouser', 'Men\'s Trouser'),
+        ('mens_jeans', 'Men\'s Jeans'),
+        ('mens_kurta', 'Men\'s Kurta'),
+        ('mens_shalwar', 'Men\'s Shalwar Kameez'),
+        ('mens_waistcoat', 'Men\'s Waistcoat'),
+        ('mens_blazer', 'Men\'s Blazer'),
         
-        # 🟡 MEDIUM RANGE (Good Quality)
-        ('deodar', 'Deodar (Himalayan Cedar)'),
-        ('chir_pine', 'Chir Pine'),
-        ('sandalwood', 'Sandalwood'),
-        ('walnut', 'Walnut'),
-        ('mahogany', 'Mahogany'),
+        # 🟢 Women's Clothing
+        ('womens_kurta', 'Women\'s Kurta'),
+        ('womens_suit', 'Women\'s Suit'),
+        ('womens_dress', 'Women\'s Dress'),
+        ('womens_abaya', 'Women\'s Abaya'),
+        ('womens_hoodie', 'Women\'s Hoodie'),
+        ('womens_trouser', 'Women\'s Trouser'),
+        ('womens_jeans', 'Women\'s Jeans'),
+        ('womens_blouse', 'Women\'s Blouse'),
         
-        # 🔴 PREMIUM & LUXURY (Expensive)
-        ('teak', 'Teak (Sagwan)'),
-        ('rosewood', 'Rosewood (Sheesham Premium)'),
-        ('ebony', 'Ebony (Aabnoos)'),
-        ('shisham', 'Shisham (Dalbergia Sissoo)'),
-        ('partal', 'Partal (Walnut Premium)'),
+        # 🟢 Kids Clothing
+        ('kids_kurta', 'Kids Kurta'),
+        ('kids_tshirt', 'Kids T-Shirt'),
+        ('kids_trouser', 'Kids Trouser'),
+        ('kids_dress', 'Kids Dress'),
+        ('kids_traditional', 'Kids Traditional Wear'),
         
-        # 🟣 IMPORTED WOODS (Available in markets)
-        ('oak', 'Oak (Imported)'),
-        ('maple', 'Maple (Imported)'),
-        ('cherry', 'Cherry (Imported)'),
-        ('birch', 'Birch (Imported)'),
-        ('beech', 'Beech (Imported)'),
-        ('sheesham', 'شیشم (Sheesham)'),
-        ('kikar', 'کیکر (Kikar)'),
-        ('tali', 'تالی (Tali)'),
-        ('sufaida', 'سفیدہ (Poplar)'),
-        ('shisham', 'شیشم (Shisham)'),
-        ('ber', 'بیر (Ber)'),
-        ('phalahi', 'پھلاہی (Phalahi)'),
-        
-        # 🟡 MEDIUM RANGE (معیاری لکڑی)
-        ('kail', 'کائل (Kail - Blue Pine)'),
-        ('partal', 'پرتل (Partal - Walnut)'),
-        ('deodar', 'دیودار (Deodar - Cedar)'),
-        ('chir', 'چیر (Chir Pine)'),
-        ('marandi', 'مرندی (Marandi)'),
-        
-        # 🔴 PREMIUM & LUXURY (اعلیٰ معیار)
-        ('sohangi', 'سوہانجنا (Sohangi)'),
-        ('sandal', 'صندل (Sandalwood)'),
-        ('abnus', 'آبنوس (Ebony)'),
-        ('rohira', 'روہیڑا (Rohira)'),
-        ('saroo', 'سارو (Saroo)'),
-        
-        # 🟣 FRUIT WOODS (پھل دار درخت)
-        ('amrood', 'امرود (Guava Wood)'),
-        ('jamun', 'جامن (Java Plum)'),
-        ('mango', 'آم (Mango Wood)'),
-        ('neem', 'نیم (Neem)'),
-        ('akhrot', 'اخروٹ (Walnut)'),
+        # 🟢 Unisex
+        ('unisex_hoodie', 'Unisex Hoodie'),
+        ('unisex_tshirt', 'Unisex T-Shirt'),
+        ('unisex_tracksuit', 'Unisex Tracksuit'),
     ]
-    PRODUCT_TYPES = [
-        ('door', 'Door'),
-        ('board', 'Board'),
-        ('furniture', 'Furniture'),
-        ('craft', 'Handmade Craft'),
-        ('accessory', 'Accessory'),
-        ('other', 'Other'),
+    
+    # Fabric Types for Pakistani Clothing
+    FABRIC_TYPES = [
+        # 🟢 COTTON & BLENDS (Most Popular in Pakistan)
+        ('khadar', 'Khadar Cotton'),
+        ('cotton', 'Pure Cotton'),
+        ('linen', 'Linen'),
+        ('cotton_linen', 'Cotton Linen Blend'),
+        ('viscose', 'Viscose'),
+        ('poly_cotton', 'Poly Cotton'),
+        
+        # 🟡 PREMIUM FABRICS
+        ('silk', 'Pure Silk'),
+        ('silk_cotton', 'Silk Cotton Blend'),
+        ('chiffon', 'Chiffon'),
+        ('georgette', 'Georgette'),
+        ('organza', 'Organza'),
+        
+        # 🔴 LUXURY & TRADITIONAL
+        ('banarsi', 'Banarsi Silk'),
+        ('jamawar', 'Jamawar'),
+        ('kashmiri', 'Kashmiri Wool'),
+        ('pashmina', 'Pashmina'),
+        ('embroidered', 'Embroidered Fabric'),
+        
+        # 🟣 DENIM & CASUAL
+        ('denim', 'Denim'),
+        ('corduroy', 'Corduroy'),
+        ('terry_cotton', 'Terry Cotton'),
+        ('jersey', 'Jersey'),
+        ('fleece', 'Fleece'),
+    ]
+    
+    # Size Choices
+    SIZE_CHOICES = [
+        # Standard Sizes
+        ('xs', 'XS'),
+        ('s', 'S'),
+        ('m', 'M'),
+        ('l', 'L'),
+        ('xl', 'XL'),
+        ('xxl', 'XXL'),
+        ('xxxl', 'XXXL'),
+        
+        # Numeric Sizes
+        ('28', '28'),
+        ('30', '30'),
+        ('32', '32'),
+        ('34', '34'),
+        ('36', '36'),
+        ('38', '38'),
+        ('40', '40'),
+        ('42', '42'),
+        ('44', '44'),
+        
+        # Kids Sizes
+        ('2-3y', '2-3 Years'),
+        ('4-5y', '4-5 Years'),
+        ('6-7y', '6-7 Years'),
+        ('8-9y', '8-9 Years'),
+        ('10-12y', '10-12 Years'),
+    ]
+    
+    # Color Choices
+    COLOR_CHOICES = [
+        ('white', 'White'),
+        ('black', 'Black'),
+        ('navy_blue', 'Navy Blue'),
+        ('sky_blue', 'Sky Blue'),
+        ('red', 'Red'),
+        ('green', 'Green'),
+        ('yellow', 'Yellow'),
+        ('pink', 'Pink'),
+        ('purple', 'Purple'),
+        ('gray', 'Gray'),
+        ('brown', 'Brown'),
+        ('beige', 'Beige'),
+        ('maroon', 'Maroon'),
+        ('olive', 'Olive'),
+        ('teal', 'Teal'),
+        ('multi', 'Multi Color'),
     ]
     
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    product_type = models.CharField(max_length=30, choices=PRODUCT_TYPES, default='other')
-    wood_type = models.CharField(max_length=20, choices=WOOD_TYPES)
+    product_type = models.CharField(max_length=30, choices=CLOTHING_TYPES, default='mens_tshirt')
+    fabric_type = models.CharField(max_length=20, choices=FABRIC_TYPES, blank=True, null=True)
+    
+    # Size and Color
+    size = models.CharField(max_length=10, choices=SIZE_CHOICES, blank=True, null=True)
+    color = models.CharField(max_length=15, choices=COLOR_CHOICES, blank=True, null=True)
+    
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     compare_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     cost_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
@@ -115,14 +178,35 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    # Dimensions
-    length = models.DecimalField(max_digits=6, decimal_places=2, help_text="Length in inches")
-    width = models.DecimalField(max_digits=6, decimal_places=2, help_text="Width in inches")
-    height = models.DecimalField(max_digits=6, decimal_places=2, help_text="Height in inches")
-    weight = models.DecimalField(max_digits=6, decimal_places=2, help_text="Weight in pounds")
-
-    # New fields for domestic/international sales and export details
-    origin_country = models.CharField(max_length=100, blank=True, help_text="Country of origin (e.g. Pakistan)")
+    # Clothing-specific dimensions
+    length = models.DecimalField(max_digits=6, decimal_places=2, help_text="Length in inches", blank=True, null=True)
+    chest_width = models.DecimalField(max_digits=6, decimal_places=2, help_text="Chest width in inches", blank=True, null=True)
+    waist_width = models.DecimalField(max_digits=6, decimal_places=2, help_text="Waist width in inches", blank=True, null=True)
+    shoulder_width = models.DecimalField(max_digits=6, decimal_places=2, help_text="Shoulder width in inches", blank=True, null=True)
+    
+    # Care instructions
+    care_instructions = models.TextField(blank=True, help_text="Washing and care instructions")
+    
+    # New fields for clothing-specific attributes
+    season = models.CharField(max_length=20, choices=[
+        ('summer', 'Summer'),
+        ('winter', 'Winter'),
+        ('all_season', 'All Season'),
+        ('spring', 'Spring'),
+        ('autumn', 'Autumn'),
+    ], default='all_season')
+    
+    occasion = models.CharField(max_length=20, choices=[
+        ('casual', 'Casual'),
+        ('formal', 'Formal'),
+        ('party', 'Party'),
+        ('wedding', 'Wedding'),
+        ('eid', 'Eid'),
+        ('everyday', 'Everyday Wear'),
+    ], default='casual')
+    
+    # International sales fields
+    origin_country = models.CharField(max_length=100, blank=True, default="Pakistan")
     available_domestic = models.BooleanField(default=True)
     available_international = models.BooleanField(default=False)
     export_allowed = models.BooleanField(default=False, help_text="Allow export/sale outside origin country")
@@ -133,7 +217,7 @@ class Product(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
     
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.get_color_display()} - {self.get_size_display()}"
     
     def get_absolute_url(self):
         return reverse('products:product_detail', args=[self.slug])
@@ -145,6 +229,17 @@ class Product(models.Model):
         if self.compare_price and self.compare_price > self.price:
             return int(((self.compare_price - self.price) / self.compare_price) * 100)
         return 0
+    
+    def get_gender(self):
+        """Extract gender from product type"""
+        if self.product_type.startswith('mens_'):
+            return 'Men'
+        elif self.product_type.startswith('womens_'):
+            return 'Women'
+        elif self.product_type.startswith('kids_'):
+            return 'Kids'
+        else:
+            return 'Unisex'
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
@@ -152,18 +247,9 @@ class ProductImage(models.Model):
     alt_text = models.CharField(max_length=200, blank=True)
     is_primary = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    # Category =models.ForeignKey(Category, related_name='products',on_delete=models.CASCADE)
-    # name = models.CharField(max_length=250)
-    # slug = models.SlugField(max_length=250, unique=True)
-    # descreption = models.TextField(blank=True)
-    # price = models.DecimalField(max_digits=10, decimal_places=2)
-    # available = models.BooleanField(default=True)
-    # created = models.DateTimeField(auto_now_add=True)
-    # updated = models.DateTimeField(auto_now=True)
-    # image = models.ImageField(upload_to='/products', blank=True, null=True)
     
-    def __str__(self)-> str:
-        return f"Image for {self.product.name}"
+    # Color variant for the image
+    color_variant = models.CharField(max_length=15, choices=Product.COLOR_CHOICES, blank=True)
     
-    def get_absolute_url(self):
-        return reverse('products:product_detail', kwargs=[self.product.id, self.product.slug])
+    def __str__(self):
+        return f"Image for {self.product.name} - {self.color_variant if self.color_variant else 'Default'}"
