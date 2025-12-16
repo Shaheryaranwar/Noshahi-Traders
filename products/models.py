@@ -51,6 +51,13 @@ class Product(models.Model):
         ('mens_shalwar', 'Men\'s Shalwar Kameez'),
         ('mens_waistcoat', 'Men\'s Waistcoat'),
         ('mens_blazer', 'Men\'s Blazer'),
+        ('mens_suit', 'Men\'s Suit'),
+        ('mens_hoodie', 'Men\'s Hoodie'),
+        ('mens_jacket', 'Men\'s Jacket'),
+        ('mens_coat', 'Men\'s Coat'),
+        ('mens_short', 'Men\'s Shorts'),
+        ('mens_shoes', 'Men\'s Shoes'),
+        ('mens_sweater', 'Men\'s Sweater'),
         
         # 🟢 Women's Clothing
         ('womens_kurta', 'Women\'s Kurta'),
@@ -61,6 +68,12 @@ class Product(models.Model):
         ('womens_trouser', 'Women\'s Trouser'),
         ('womens_jeans', 'Women\'s Jeans'),
         ('womens_blouse', 'Women\'s Blouse'),
+        ('womens_shawl', 'Women\'s Shawl'),
+        ('womens_jacket', 'Women\'s Jacket'),
+        ('womens_coat', 'Women\'s Coat'),
+        ('womens_skirt', 'Women\'s Skirt'),
+        ('womens_sweater', 'Women\'s Sweater'),
+        ('womens_shoes', 'Women\'s Shoes'),
         
         # 🟢 Kids Clothing
         ('kids_kurta', 'Kids Kurta'),
@@ -68,11 +81,12 @@ class Product(models.Model):
         ('kids_trouser', 'Kids Trouser'),
         ('kids_dress', 'Kids Dress'),
         ('kids_traditional', 'Kids Traditional Wear'),
-        
-        # 🟢 Unisex
-        ('unisex_hoodie', 'Unisex Hoodie'),
-        ('unisex_tshirt', 'Unisex T-Shirt'),
-        ('unisex_tracksuit', 'Unisex Tracksuit'),
+        ('kids_jeans', 'Kids Jeans'),
+        ('kids_hoodie', 'Kids Hoodie'),
+        ('kids_jacket', 'Kids Jacket'),
+        ('kids_coat', 'Kids Coat'),
+        ('kids_shoes', 'Kids Shoes'),
+    
     ]
     
     # Fabric Types for Pakistani Clothing
