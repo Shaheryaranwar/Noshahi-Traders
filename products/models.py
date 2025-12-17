@@ -176,6 +176,7 @@ class Product(models.Model):
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_type = models.CharField(max_length=30, choices=CLOTHING_TYPES, default='mens_tshirt')
+    image = models.ImageField(upload_to='Products/', blank=True)
     fabric_type = models.CharField(max_length=20, choices=FABRIC_TYPES, blank=True, null=True)
     
     # Size and Color

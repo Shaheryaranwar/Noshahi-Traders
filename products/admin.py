@@ -59,6 +59,7 @@ class ProductAdmin(admin.ModelAdmin):
         'name', 'price', 'category',
         'product_type', 'size',
         'stock_quantity', 'is_active',
+        'image',
     )
 
     list_filter = (
@@ -74,7 +75,7 @@ class ProductAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Basic Information', {
             'fields': ('name', 'slug', 'category', 'product_type',
-                       'price', 'compare_price', 'cost_price', 'sku')
+                       'price', 'compare_price', 'cost_price', 'sku', 'image')
         }),
         ('Attributes', {
             'fields': ('fabric_type', 'size', 'color',
