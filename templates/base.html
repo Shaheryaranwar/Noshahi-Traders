@@ -3,18 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>{%block title%}My Oragnic Wooden House{%endblock%}</title>
-    <meta name="description" content="A simple hello world page" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="favicon.ico" />
-
+    <title>{%block title%}My Super Cool Shop Site{%endblock%}</title>
     {% load static %}
-    <link href="{% static  'dist/css/style.css'%}" real="stylesheet" />
+    <link href="{% static 'dist/css/style.css' %}" rel="stylesheet" />
+    <meta name="descripition" content="E-Commerce Store" />
+    <link rel="icon" href="favicon.png" />
   </head>
   <body>
+    {% include 'includes/nav.html' %}
     <script src="index.js"></script>
     {% block content%}{%endblock%}
-    {% include 'includes/navbar.html' %}
   </body>
 </html>
